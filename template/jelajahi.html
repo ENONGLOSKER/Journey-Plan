@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jelajahi Journey Plans - JourneyPlan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#F59E0B',
+                        dark: '#1F2937',
+                        light: '#F9FAFB'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .journey-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .journey-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .filter-item {
+            transition: all 0.2s ease;
+        }
+        .filter-item:hover {
+            background-color: #F3F4F6;
+        }
+        .category-chip {
+            transition: all 0.2s ease;
+        }
+        .category-chip:hover {
+            transform: scale(1.05);
+        }
+        .tab-button {
+            transition: all 0.2s ease;
+        }
+        .tab-button.active {
+            border-bottom: 3px solid #3B82F6;
+            color: #3B82F6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-md fixed w-full top-0 z-10">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="bg-primary text-white p-2 rounded-lg">
+                    <i class="fas fa-route text-xl"></i>
+                </div>
+                <span class="text-xl font-bold text-primary">JourneyPlan</span>
+            </div>
+            
+            <div class="hidden md:flex space-x-8">
+                <a href="#" class="text-gray-600 hover:text-primary">Home</a>
+                <a href="#" class="text-gray-600 hover:text-primary">Journey Saya</a>
+                <a href="#" class="text-primary font-medium border-b-2 border-primary">Jelajahi</a>
+                <a href="#" class="text-gray-600 hover:text-primary">Profil</a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <input type="text" placeholder="Cari journey..." class="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                    <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                </div>
+                <div class="relative">
+                    <button class="bg-gray-200 rounded-full h-10 w-10 flex items-center justify-center">
+                        <i class="fas fa-bell text-gray-600"></i>
+                    </button>
+                    <span class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full h-5 w-5 text-xs flex items-center justify-center">3</span>
+                </div>
+                <div class="relative">
+                    <button class="bg-primary rounded-full h-10 w-10 flex items-center justify-center">
+                        <span class="text-white font-medium">JS</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 pt-24 pb-16">
+        <!-- Breadcrumb -->
+        <div class="flex items-center text-sm text-gray-500 mb-6">
+            <a href="#" class="text-primary hover:underline">Home</a>
+            <span class="mx-2">/</span>
+            <span class="text-gray-600">Jelajahi</span>
+        </div>
+
+        <!-- Page Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-dark">Jelajahi Journey Plans</h1>
+                <p class="text-gray-600">Temukan perjalanan belajar yang tepat untuk mengembangkan skill-mu</p>
+            </div>
+            <button class="bg-primary hover:bg-blue-700 text-white font-medium py-2.5 px-5 rounded-lg flex items-center mt-4 md:mt-0">
+                <i class="fas fa-plus-circle mr-2"></i> Buat Journey Baru
+            </button>
+        </div>
+
+        <!-- Tabs -->
+        <div class="bg-white rounded-xl shadow-sm p-4 mb-6 flex overflow-x-auto">
+            <button class="tab-button px-4 py-2 font-medium active">Semua</button>
+            <button class="tab-button px-4 py-2 font-medium">Populer</button>
+            <button class="tab-button px-4 py-2 font-medium">Trending</button>
+            <button class="tab-button px-4 py-2 font-medium">Rekomendasi</button>
+            <button class="tab-button px-4 py-2 font-medium">Baru</button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Filters Sidebar -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-sm p-6 mb-6 sticky top-24">
+                    <h2 class="text-xl font-bold text-dark mb-4">Filter</h2>
+                    
+                    <div class="mb-6">
+                        <h3 class="font-medium text-gray-700 mb-3">Kategori</h3>
+                        <div class="space-y-2">
+                            <label class="filter-item flex items-center p-2 rounded-lg cursor-pointer">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary mr-3">
+                                <span>Web Development</span>
+                            </label>
+                            <label class="filter-item flex items-center p-2 rounded-lg cursor-pointer">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary mr-3" checked>
+                                <span>Data Science</span>
+                            </label>
+                            <label class="filter-item flex items-center p-2 rounded-lg cursor-pointer">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary mr-3">
+                                <span>UI/UX Design</span>
+                            </label>
+                            <label class="filter-item flex items-center p-2 rounded-lg cursor-pointer">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary mr-3">
+                                <span>Mobile Development</span>
+                            </label>
+                            <label class="filter-item flex items-center p-2 rounded-lg cursor-pointer">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary mr-3">
+                                <span>Cloud Computing</span>
+                            </label>
+                            <label class="filter-item flex items-center p-2 rounded-lg cursor-pointer">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary mr-3">
+                                <span>Soft Skills</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h3 class="font-medium text-gray-700 mb-3">Tingkat Kesulitan</h3>
+                        <div class="space-y-2">
+                            <label class="filter-item flex items-center p-2 rounded-lg cursor-pointer">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary mr-3">
+                                <span>Pemula</span>
+                            </label>
+                            <label class="filter-item flex items-center p-2 rounded-lg cursor-pointer">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary mr-3" checked>
+                                <span>Menengah</span>
+                            </label>
+                            <label class="filter-item flex items-center p-2 rounded-lg cursor-pointer">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary mr-3">
+                                <span>Lanjutan</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h3 class="font-medium text-gray-700 mb-3">Durasi</h3>
+                        <div class="space-y-2">
+                            <label class="filter-item flex items-center p-2 rounded-lg cursor-pointer">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary mr-3">
+                                <span>1-4 Minggu</span>
+                            </label>
+                            <label class="filter-item flex items-center p-2 rounded-lg cursor-pointer">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary mr-3" checked>
+                                <span>4-8 Minggu</span>
+                            </label>
+                            <label class="filter-item flex items-center p-2 rounded-lg cursor-pointer">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary mr-3">
+                                <span>8+ Minggu</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-medium text-gray-700 mb-3">Rating</h3>
+                        <div class="space-y-2">
+                            <label class="filter-item flex items-center p-2 rounded-lg cursor-pointer">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary mr-3">
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </label>
+                            <label class="filter-item flex items-center p-2 rounded-lg cursor-pointer">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary mr-3" checked>
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                            </label>
+                            <label class="filter-item flex items-center p-2 rounded-lg cursor-pointer">
+                                <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary mr-3">
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full bg-primary hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg mt-6">
+                        Terapkan Filter
+                    </button>
+                    <button class="w-full bg-gray-100 hover:bg-gray-200 text-dark font-medium py-2.5 rounded-lg mt-3">
+                        Reset Filter
+                    </button>
+                </div>
+
+                <!-- Popular Categories -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h2 class="text-xl font-bold text-dark mb-4">Kategori Populer</h2>
+                    
+                    <div class="space-y-3">
+                        <div class="category-chip flex items-center justify-between p-3 bg-blue-50 rounded-lg cursor-pointer">
+                            <div class="flex items-center">
+                                <div class="bg-blue-100 text-blue-800 rounded-lg h-10 w-10 flex items-center justify-center mr-3">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <span class="font-medium">Web Development</span>
+                            </div>
+                            <span class="bg-white text-blue-800 text-xs font-medium px-2 py-1 rounded">128</span>
+                        </div>
+                        
+                        <div class="category-chip flex items-center justify-between p-3 bg-green-50 rounded-lg cursor-pointer">
+                            <div class="flex items-center">
+                                <div class="bg-green-100 text-green-800 rounded-lg h-10 w-10 flex items-center justify-center mr-3">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <span class="font-medium">Data Science</span>
+                            </div>
+                            <span class="bg-white text-green-800 text-xs font-medium px-2 py-1 rounded">86</span>
+                        </div>
+                        
+                        <div class="category-chip flex items-center justify-between p-3 bg-purple-50 rounded-lg cursor-pointer">
+                            <div class="flex items-center">
+                                <div class="bg-purple-100 text-purple-800 rounded-lg h-10 w-10 flex items-center justify-center mr-3">
+                                    <i class="fas fa-paint-brush"></i>
+                                </div>
+                                <span class="font-medium">UI/UX Design</span>
+                            </div>
+                            <span class="bg-white text-purple-800 text-xs font-medium px-2 py-1 rounded">64</span>
+                        </div>
+                        
+                        <div class="category-chip flex items-center justify-between p-3 bg-yellow-50 rounded-lg cursor-pointer">
+                            <div class="flex items-center">
+                                <div class="bg-yellow-100 text-yellow-800 rounded-lg h-10 w-10 flex items-center justify-center mr-3">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                                <span class="font-medium">Mobile Development</span>
+                            </div>
+                            <span class="bg-white text-yellow-800 text-xs font-medium px-2 py-1 rounded">52</span>
+                        </div>
+                        
+                        <div class="category-chip flex items-center justify-between p-3 bg-red-50 rounded-lg cursor-pointer">
+                            <div class="flex items-center">
+                                <div class="bg-red-100 text-red-800 rounded-lg h-10 w-10 flex items-center justify-center mr-3">
+                                    <i class="fas fa-cloud"></i>
+                                </div>
+                                <span class="font-medium">Cloud Computing</span>
+                            </div>
+                            <span class="bg-white text-red-800 text-xs font-medium px-2 py-1 rounded">45</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Journeys List -->
+            <div class="lg:col-span-3">
+                <!-- Sort and View Options -->
+                <div class="bg-white rounded-xl shadow-sm p-4 mb-6 flex flex-col md:flex-row justify-between items-start md:items-center">
+                    <p class="text-gray-600 mb-2 md:mb-0">Menampilkan <span class="font-semibold">24</span> hasil</p>
+                    
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <span class="text-gray-600 mr-2">Urutkan:</span>
+                            <select class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option>Paling Relevan</option>
+                                <option>Paling Populer</option>
+                                <option>Rating Tertinggi</option>
+                                <option>Terbaru</option>
+                            </select>
+                        </div>
+                        
+                        <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+                            <button class="p-2 bg-gray-100 text-gray-700">
+                                <i class="fas fa-th-large"></i>
+                            </button>
+                            <button class="p-2 bg-primary text-white">
+                                <i class="fas fa-list"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Journeys Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+                    <!-- Journey 1 -->
+                    <div class="journey-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="h-40 bg-gradient-to-r from-blue-400 to-blue-600 relative">
+                            <span class="absolute top-3 left-3 bg-white text-blue-800 text-xs font-medium px-2 py-1 rounded">Web Development</span>
+                            <span class="absolute top-3 right-3 bg-white text-gray-600 rounded-full h-8 w-8 flex items-center justify-center">
+                                <i class="far fa-bookmark"></i>
+                            </span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-1">Young Django Journey</h3>
+                            <div class="flex items-center text-sm text-gray-600 mb-3">
+                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-0.5 rounded mr-2">Menengah</span>
+                                <span>• 8 minggu</span>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-4">Master Django step by step. Pelajari framework web Python yang powerful untuk membangun aplikasi web.</p>
+                            
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center">
+                                    <div class="h-6 w-6 rounded-full bg-gray-200 mr-2"></div>
+                                    <span class="text-sm text-gray-600">John Smith</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="flex text-yellow-400 mr-1">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                    <span class="text-sm text-gray-600">4.5</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600"><i class="fas fa-users mr-1"></i> 1.2k</span>
+                                <span class="text-sm text-gray-600"><i class="fas fa-layer-group mr-1"></i> 6 modul</span>
+                                <span class="text-sm text-gray-600"><i class="fas fa-clock mr-1"></i> 40 jam</span>
+                            </div>
+                        </div>
+                        <div class="px-4 pb-4">
+                            <button class="w-full bg-primary hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg">
+                                Ikuti Journey
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Journey 2 -->
+                    <div class="journey-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="h-40 bg-gradient-to-r from-green-400 to-green-600 relative">
+                            <span class="absolute top-3 left-3 bg-white text-green-800 text-xs font-medium px-2 py-1 rounded">Data Science</span>
+                            <span class="absolute top-3 right-3 bg-white text-gray-600 rounded-full h-8 w-8 flex items-center justify-center">
+                                <i class="far fa-bookmark"></i>
+                            </span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-1">Data Science Bootcamp</h3>
+                            <div class="flex items-center text-sm text-gray-600 mb-3">
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded mr-2">Pemula</span>
+                                <span>• 10 minggu</span>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-4">Pelajari data science dari dasar hingga advanced. Kuasai Python, statistik, machine learning, dan visualisasi data.</p>
+                            
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center">
+                                    <div class="h-6 w-6 rounded-full bg-gray-200 mr-2"></div>
+                                    <span class="text-sm text-gray-600">Sarah Johnson</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="flex text-yellow-400 mr-1">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <span class="text-sm text-gray-600">4.9</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600"><i class="fas fa-users mr-1"></i> 2.5k</span>
+                                <span class="text-sm text-gray-600"><i class="fas fa-layer-group mr-1"></i> 8 modul</span>
+                                <span class="text-sm text-gray-600"><i class="fas fa-clock mr-1"></i> 60 jam</span>
+                            </div>
+                        </div>
+                        <div class="px-4 pb-4">
+                            <button class="w-full bg-primary hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg">
+                                Ikuti Journey
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Journey 3 -->
+                    <div class="journey-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="h-40 bg-gradient-to-r from-purple-400 to-purple-600 relative">
+                            <span class="absolute top-3 left-3 bg-white text-purple-800 text-xs font-medium px-2 py-1 rounded">UI/UX Design</span>
+                            <span class="absolute top-3 right-3 bg-white text-gray-600 rounded-full h-8 w-8 flex items-center justify-center">
+                                <i class="far fa-bookmark"></i>
+                            </span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-1">UX Design Mastery</h3>
+                            <div class="flex items-center text-sm text-gray-600 mb-3">
+                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-0.5 rounded mr-2">Menengah</span>
+                                <span>• 6 minggu</span>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-4">Pelajari prinsip-prinsip UX design, research methods, prototyping, dan tools modern untuk menjadi UX designer.</p>
+                            
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center">
+                                    <div class="h-6 w-6 rounded-full bg-gray-200 mr-2"></div>
+                                    <span class="text-sm text-gray-600">Michael Chen</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="flex text-yellow-400 mr-1">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                    <span class="text-sm text-gray-600">4.0</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600"><i class="fas fa-users mr-1"></i> 890</span>
+                                <span class="text-sm text-gray-600"><i class="fas fa-layer-group mr-1"></i> 5 modul</span>
+                                <span class="text-sm text-gray-600"><i class="fas fa-clock mr-1"></i> 35 jam</span>
+                            </div>
+                        </div>
+                        <div class="px-4 pb-4">
+                            <button class="w-full bg-primary hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg">
+                                Ikuti Journey
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Journey 4 -->
+                    <div class="journey-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="h-40 bg-gradient-to-r from-red-400 to-red-600 relative">
+                            <span class="absolute top-3 left-3 bg-white text-red-800 text-xs font-medium px-2 py-1 rounded">Cloud Computing</span>
+                            <span class="absolute top-3 right-3 bg-white text-gray-600 rounded-full h-8 w-8 flex items-center justify-center">
+                                <i class="far fa-bookmark"></i>
+                            </span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-1">AWS Cloud Practitioner</h3>
+                            <div class="flex items-center text-sm text-gray-600 mb-3">
+                                <span class="bg-red-100 text-red-800 text-xs font-medium px-2 py-0.5 rounded mr-2">Lanjutan</span>
+                                <span>• 12 minggu</span>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-4">Persiapkan diri untuk sertifikasi AWS Cloud Practitioner. Pelajari layanan AWS dan arsitektur cloud.</p>
+                            
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center">
+                                    <div class="h-6 w-6 rounded-full bg-gray-200 mr-2"></div>
+                                    <span class="text-sm text-gray-600">Emma Wilson</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="flex text-yellow-400 mr-1">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                    <span class="text-sm text-gray-600">4.7</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600"><i class="fas fa-users mr-1"></i> 1.8k</span>
+                                <span class="text-sm text-gray-600"><i class="fas fa-layer-group mr-1"></i> 9 modul</span>
+                                <span class="text-sm text-gray-600"><i class="fas fa-clock mr-1"></i> 70 jam</span>
+                            </div>
+                        </div>
+                        <div class="px-4 pb-4">
+                            <button class="w-full bg-primary hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg">
+                                Ikuti Journey
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Journey 5 -->
+                    <div class="journey-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="h-40 bg-gradient-to-r from-yellow-400 to-yellow-600 relative">
+                            <span class="absolute top-3 left-3 bg-white text-yellow-800 text-xs font-medium px-2 py-1 rounded">Mobile Development</span>
+                            <span class="absolute top-3 right-3 bg-white text-gray-600 rounded-full h-8 w-8 flex items-center justify-center">
+                                <i class="far fa-bookmark"></i>
+                            </span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-1">Flutter Mobile Dev</h3>
+                            <div class="flex items-center text-sm text-gray-600 mb-3">
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded mr-2">Pemula</span>
+                                <span>• 8 minggu</span>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-4">Belajar membangun aplikasi mobile cross-platform dengan Flutter dan Dart. Dari dasar hingga publish ke store.</p>
+                            
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center">
+                                    <div class="h-6 w-6 rounded-full bg-gray-200 mr-2"></div>
+                                    <span class="text-sm text-gray-600">Alex Rodriguez</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="flex text-yellow-400 mr-1">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                    <span class="text-sm text-gray-600">4.2</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600"><i class="fas fa-users mr-1"></i> 1.5k</span>
+                                <span class="text-sm text-gray-600"><i class="fas fa-layer-group mr-1"></i> 7 modul</span>
+                                <span class="text-sm text-gray-600"><i class="fas fa-clock mr-1"></i> 50 jam</span>
+                            </div>
+                        </div>
+                        <div class="px-4 pb-4">
+                            <button class="w-full bg-primary hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg">
+                                Ikuti Journey
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Journey 6 -->
+                    <div class="journey-card bg-white border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="h-40 bg-gradient-to-r from-indigo-400 to-indigo-600 relative">
+                            <span class="absolute top-3 left-3 bg-white text-indigo-800 text-xs font-medium px-2 py-1 rounded">Soft Skills</span>
+                            <span class="absolute top-3 right-3 bg-white text-gray-600 rounded-full h-8 w-8 flex items-center justify-center">
+                                <i class="far fa-bookmark"></i>
+                            </span>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-1">Public Speaking Mastery</h3>
+                            <div class="flex items-center text-sm text-gray-600 mb-3">
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded mr-2">Pemula</span>
+                                <span>• 4 minggu</span>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-4">Tingkatkan kepercayaan diri dan kemampuan public speaking-mu. Pelajari teknik presentasi yang efektif.</p>
+                            
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center">
+                                    <div class="h-6 w-6 rounded-full bg-gray-200 mr-2"></div>
+                                    <span class="text-sm text-gray-600">Lisa Thompson</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="flex text-yellow-400 mr-1">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                    <span class="text-sm text-gray-600">4.6</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600"><i class="fas fa-users mr-1"></i> 750</span>
+                                <span class="text-sm text-gray-600"><i class="fas fa-layer-group mr-1"></i> 4 modul</span>
+                                <span class="text-sm text-gray-600"><i class="fas fa-clock mr-1"></i> 20 jam</span>
+                            </div>
+                        </div>
+                        <div class="px-4 pb-4">
+                            <button class="w-full bg-primary hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg">
+                                Ikuti Journey
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="bg-white rounded-xl shadow-sm p-4 flex justify-center">
+                    <nav class="flex items-center space-x-2">
+                        <button class="h-10 w-10 flex items-center justify-center rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="h-10 w-10 flex items-center justify-center rounded-lg bg-primary text-white font-medium">1</button>
+                        <button class="h-10 w-10 flex items-center justify-center rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50">2</button>
+                        <button class="h-10 w-10 flex items-center justify-center rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50">3</button>
+                        <span class="px-2 text-gray-600">...</span>
+                        <button class="h-10 w-10 flex items-center justify-center rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50">8</button>
+                        <button class="h-10 w-10 flex items-center justify-center rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Tab functionality
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Category chips functionality
+        document.querySelectorAll('.category-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                // In a real app, this would filter the journeys by category
+                const category = this.querySelector('span').textContent;
+                alert(`Menampilkan journey untuk kategori: ${category}`);
+            });
+        });
+
+        // Bookmark functionality
+        document.querySelectorAll('.fa-bookmark').forEach(icon => {
+            icon.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.classList.toggle('far');
+                this.classList.toggle('fas');
+                this.classList.toggle('text-primary');
+            });
+        });
+    </script>
+</body>
+</html>
