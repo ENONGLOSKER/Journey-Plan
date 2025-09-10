@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journey Plan - home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#F59E0B',
+                        dark: '#1F2937',
+                        light: '#F9FAFB'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .progress-ring {
+            transition: stroke-dashoffset 0.5s ease;
+        }
+        .journey-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .journey-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .module-item {
+            transition: background-color 0.2s ease;
+        }
+        .module-item:hover {
+            background-color: #F3F4F6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-md fixed w-full top-0 z-10">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="bg-primary text-white p-2 rounded-lg">
+                    <i class="fas fa-route text-xl"></i>
+                </div>
+                <span class="text-xl font-bold text-primary">JourneyPlan</span>
+            </div>
+            
+            <div class="hidden md:flex space-x-8">
+                <a href="#" class="text-primary font-medium border-b-2 border-primary">Home</a>
+                <a href="#" class="text-gray-600 hover:text-primary">Journey</a>
+                <a href="#" class="text-gray-600 hover:text-primary">Jelajahi</a>
+                <a href="#" class="text-gray-600 hover:text-primary">Profil</a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <input type="text" placeholder="Cari journey..." class="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                    <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                </div>
+                <div class="relative">
+                    <button class="bg-gray-200 rounded-full h-10 w-10 flex items-center justify-center">
+                        <i class="fas fa-bell text-gray-600"></i>
+                    </button>
+                    <span class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full h-5 w-5 text-xs flex items-center justify-center">3</span>
+                </div>
+                <div class="relative">
+                    <button class="bg-primary rounded-full h-10 w-10 flex items-center justify-center">
+                        <span class="text-white font-medium">JS</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 pt-24 pb-16">
+        <!-- Dashboard Header -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-dark">Halo, Elqusairi!</h1>
+                <p class="text-gray-600">Selamat datang kembali, mari lanjutkan perjalanan belajarmu!</p>
+            </div>
+            <button class="bg-primary hover:bg-blue-700 text-white font-medium py-2.5 px-5 rounded-lg flex items-center">
+                <i class="fas fa-plus-circle mr-2"></i> Buat Journey Baru
+            </button>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+            <!-- My Journeys -->
+            <div class="lg:col-span-2 bg-white rounded-xl shadow-sm p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-dark">Journey Saya (3)</h2>
+                    <a href="detail.html" class="text-primary hover:underline text-sm font-medium">Lihat Semua</a>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Journey Card 1 -->
+                    <div class="journey-card bg-white border border-gray-200 rounded-lg p-4">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="font-semibold text-dark">Django Mastery</h3>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded">Aktif</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                            <div class="bg-primary h-2 rounded-full" style="width: 45%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-600 mb-3">
+                            <span>45% selesai</span>
+                            <span>3/8 modul</span>
+                        </div>
+                        <button class="w-full bg-gray-100 hover:bg-gray-200 text-dark font-medium py-2 rounded-lg text-sm">
+                            Lanjutkan Belajar
+                        </button>
+                    </div>
+                    
+                    <!-- Journey Card 2 -->
+                    <div class="journey-card bg-white border border-gray-200 rounded-lg p-4">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="font-semibold text-dark">Web Dev Path</h3>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded">Aktif</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                            <div class="bg-primary h-2 rounded-full" style="width: 20%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-600 mb-3">
+                            <span>20% selesai</span>
+                            <span>1/5 modul</span>
+                        </div>
+                        <button class="w-full bg-gray-100 hover:bg-gray-200 text-dark font-medium py-2 rounded-lg text-sm">
+                            Lanjutkan Belajar
+                        </button>
+                    </div>
+                    
+                    <!-- Journey Card 3 -->
+                    <div class="journey-card bg-white border border-gray-200 rounded-lg p-4">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="font-semibold text-dark">Data Science</h3>
+                            <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2 py-0.5 rounded">Belum mulai</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                            <div class="bg-primary h-2 rounded-full" style="width: 0%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-600 mb-3">
+                            <span>0% selesai</span>
+                            <span>0/6 modul</span>
+                        </div>
+                        <button class="w-full bg-gray-100 hover:bg-gray-200 text-dark font-medium py-2 rounded-lg text-sm">
+                            Mulai Belajar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Weekly Stats -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-xl font-bold text-dark mb-6">Statistik Belajar Minggu Ini</h2>
+                
+                <div class="mb-4">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-600">Total: 12 jam</span>
+                        <span class="text-sm font-medium text-gray-600">Rata-rata: 1.7 jam/hari</span>
+                    </div>
+                    
+                    <div class="flex items-end justify-between h-32">
+                        <div class="flex flex-col items-center">
+                            <div class="bg-primary bg-opacity-20 w-8 rounded-t" style="height: 20%"></div>
+                            <span class="text-xs mt-1 text-gray-600">Sen</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="bg-primary w-8 rounded-t" style="height: 40%"></div>
+                            <span class="text-xs mt-1 text-gray-600">Sel</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="bg-primary w-8 rounded-t" style="height: 60%"></div>
+                            <span class="text-xs mt-1 text-gray-600">Rab</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="bg-primary w-8 rounded-t" style="height: 30%"></div>
+                            <span class="text-xs mt-1 text-gray-600">Kam</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="bg-primary w-8 rounded-t" style="height: 80%"></div>
+                            <span class="text-xs mt-1 text-gray-600">Jum</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="bg-primary bg-opacity-20 w-8 rounded-t" style="height: 0%"></div>
+                            <span class="text-xs mt-1 text-gray-600">Sab</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="bg-primary bg-opacity-20 w-8 rounded-t" style="height: 0%"></div>
+                            <span class="text-xs mt-1 text-gray-600">Min</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pt-4 border-t border-gray-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-600">Target harian: 2 jam</span>
+                        <span class="text-sm font-medium text-primary">85% tercapai</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-primary h-2 rounded-full" style="width: 85%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recommended Journeys -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-10">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-dark">Rekomendasi Untuk Anda</h2>
+                <a href="#" class="text-primary hover:underline text-sm font-medium">Lihat Semua</a>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Recommended Journey 1 -->
+                <div class="journey-card border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="h-32 bg-gradient-to-r from-blue-400 to-blue-600"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-1">Python Basics</h3>
+                        <div class="flex items-center text-sm text-gray-600 mb-3">
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded mr-2">Pemula</span>
+                            <span>• 4 minggu</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">Pelajari dasar-dasar pemrograman Python dari nol hingga bisa membuat aplikasi sederhana.</p>
+                        <button class="w-full bg-primary hover:bg-blue-700 text-white font-medium py-2 rounded-lg text-sm">
+                            Ikuti Journey
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Recommended Journey 2 -->
+                <div class="journey-card border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="h-32 bg-gradient-to-r from-purple-400 to-purple-600"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-1">UX Design</h3>
+                        <div class="flex items-center text-sm text-gray-600 mb-3">
+                            <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-0.5 rounded mr-2">Menengah</span>
+                            <span>• 6 minggu</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">Kuasi prinsip-prinsip desain pengalaman pengguna untuk membuat aplikasi yang intuitif.</p>
+                        <button class="w-full bg-primary hover:bg-blue-700 text-white font-medium py-2 rounded-lg text-sm">
+                            Ikuti Journey
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Recommended Journey 3 -->
+                <div class="journey-card border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="h-32 bg-gradient-to-r from-red-400 to-red-600"></div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-lg mb-1">Cloud Computing</h3>
+                        <div class="flex items-center text-sm text-gray-600 mb-3">
+                            <span class="bg-red-100 text-red-800 text-xs font-medium px-2 py-0.5 rounded mr-2">Lanjutan</span>
+                            <span>• 8 minggu</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">Pelajari layanan cloud modern dan bagaimana mengimplementasikannya dalam aplikasi.</p>
+                        <button class="w-full bg-primary hover:bg-blue-700 text-white font-medium py-2 rounded-lg text-sm">
+                            Ikuti Journey
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h2 class="text-xl font-bold text-dark mb-6">Aktivitas Terkini</h2>
+            
+            <div class="space-y-4">
+                <div class="flex items-start">
+                    <div class="bg-blue-100 text-blue-800 rounded-full h-10 w-10 flex items-center justify-center mr-4">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium">Kamu menyelesaikan topik <span class="text-primary">Django ORM Basics</span></p>
+                        <p class="text-sm text-gray-600">2 jam yang lalu • Django Mastery</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="bg-green-100 text-green-800 rounded-full h-10 w-10 flex items-center justify-center mr-4">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium">Kamu mendapatkan achievement <span class="text-primary">Pembelajar Konsisten</span></p>
+                        <p class="text-sm text-gray-600">Kemarin • 5 hari belajar berturut-turut</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="bg-purple-100 text-purple-800 rounded-full h-10 w-10 flex items-center justify-center mr-4">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium">Kamu memulai journey baru <span class="text-primary">Web Dev Path</span></p>
+                        <p class="text-sm text-gray-600">2 hari yang lalu</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-6">
+                <a href="#" class="text-primary hover:underline font-medium">Lihat semua aktivitas</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="bg-primary text-white p-2 rounded-lg">
+                            <i class="fas fa-route text-xl"></i>
+                        </div>
+                        <span class="text-xl font-bold text-white">JourneyPlan</span>
+                    </div>
+                    <p class="text-gray-400">Platform untuk merencanakan dan melacak perjalanan belajar Anda.</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Tautan Cepat</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Tentang Kami</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Karier</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Kontak</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Sumber Daya</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Bantuan</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Komunitas</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Webinar</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Template Journey</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Tetap Terhubung</h3>
+                    <div class="flex space-x-4 mb-4">
+                        <a href="#" class="bg-gray-700 text-white rounded-full h-10 w-10 flex items-center justify-center">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="bg-gray-700 text-white rounded-full h-10 w-10 flex items-center justify-center">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="bg-gray-700 text-white rounded-full h-10 w-10 flex items-center justify-center">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="bg-gray-700 text-white rounded-full h-10 w-10 flex items-center justify-center">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-400">Berlangganan newsletter kami</p>
+                    <div class="mt-2 flex">
+                        <input type="email" placeholder="Email Anda" class="px-4 py-2 rounded-l-lg focus:outline-none text-gray-800 w-full">
+                        <button class="bg-primary text-white px-4 py-2 rounded-r-lg">OK</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400">© 2023 JourneyPlan. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white">Syarat & Ketentuan</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Kebijakan Privasi</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Cookie</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple JavaScript for interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle mobile menu (if implemented later)
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+            
+            // Simulate progress update (for demo purposes)
+            setTimeout(function() {
+                const progressBar = document.querySelector('.bg-primary');
+                if (progressBar && progressBar.style.width === '45%') {
+                    progressBar.style.width = '50%';
+                    progressBar.parentElement.nextElementSibling.querySelector('span').textContent = '50% selesai';
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

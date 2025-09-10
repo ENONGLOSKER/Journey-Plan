@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Journey Plan Baru - JourneyPlan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#F59E0B',
+                        dark: '#1F2937',
+                        light: '#F9FAFB'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .journey-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .journey-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .module-item {
+            transition: background-color 0.2s ease;
+        }
+        .module-item:hover {
+            background-color: #F3F4F6;
+        }
+        .topic-item {
+            transition: all 0.2s ease;
+        }
+        .topic-item:hover {
+            background-color: #F9FAFB;
+        }
+        .drag-handle {
+            cursor: move;
+        }
+        .sortable-ghost {
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-md fixed w-full top-0 z-10">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="bg-primary text-white p-2 rounded-lg">
+                    <i class="fas fa-route text-xl"></i>
+                </div>
+                <span class="text-xl font-bold text-primary">JourneyPlan</span>
+            </div>
+            
+            <div class="hidden md:flex space-x-8">
+                <a href="#" class="text-gray-600 hover:text-primary">Home</a>
+                <a href="#" class="text-gray-600 hover:text-primary">Journey Saya</a>
+                <a href="#" class="text-gray-600 hover:text-primary">Jelajahi</a>
+                <a href="#" class="text-primary font-medium border-b-2 border-primary">Profil</a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <input type="text" placeholder="Cari journey..." class="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                    <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                </div>
+                <div class="relative">
+                    <button class="bg-gray-200 rounded-full h-10 w-10 flex items-center justify-center">
+                        <i class="fas fa-bell text-gray-600"></i>
+                    </button>
+                    <span class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full h-5 w-5 text-xs flex items-center justify-center">3</span>
+                </div>
+                <div class="relative">
+                    <button class="bg-primary rounded-full h-10 w-10 flex items-center justify-center">
+                        <span class="text-white font-medium">JS</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 pt-24 pb-16">
+        <!-- Breadcrumb -->
+        <div class="flex items-center text-sm text-gray-500 mb-6">
+            <a href="#" class="text-primary hover:underline">Home</a>
+            <span class="mx-2">/</span>
+            <a href="#" class="text-primary hover:underline">Journey Saya</a>
+            <span class="mx-2">/</span>
+            <span class="text-gray-600">Buat Journey Baru</span>
+        </div>
+
+        <!-- Page Header -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-dark">Buat Journey Plan Baru</h1>
+                <p class="text-gray-600">Rancang perjalanan belajar yang terstruktur dan capai tujuan belajarmu</p>
+            </div>
+            <div class="flex space-x-3">
+                <button class="bg-gray-100 hover:bg-gray-200 text-dark font-medium py-2.5 px-4 rounded-lg flex items-center">
+                    <i class="fas fa-times mr-2"></i> Batal
+                </button>
+                <button class="bg-primary hover:bg-blue-700 text-white font-medium py-2.5 px-5 rounded-lg flex items-center">
+                    <i class="fas fa-save mr-2"></i> Simpan Draft
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Form Section -->
+            <div class="lg:col-span-2">
+                <!-- Basic Information -->
+                <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                    <h2 class="text-xl font-bold text-dark mb-4">Informasi Dasar</h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Judul Journey</label>
+                            <input type="text" placeholder="Contoh: Young Django Journey" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <p class="text-xs text-gray-500 mt-1">Buat judul yang menarik dan deskriptif</p>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Journey</label>
+                            <textarea placeholder="Jelaskan secara singkat tentang journey ini, tujuan pembelajaran, dan untuk siapa journey ini ditujukan..." rows="3" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tingkat Kesulitan</label>
+                                <select class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="">Pilih tingkat kesulitan</option>
+                                    <option value="pemula">Pemula</option>
+                                    <option value="menengah">Menengah</option>
+                                    <option value="lanjutan">Lanjutan</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Estimasi Durasi (minggu)</label>
+                                <input type="number" min="1" placeholder="Contoh: 8" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
+                            <div class="flex flex-wrap gap-2">
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary">
+                                    <span class="ml-2">Web Development</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary">
+                                    <span class="ml-2">Data Science</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary">
+                                    <span class="ml-2">Design</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary">
+                                    <span class="ml-2">Bahasa Pemrograman</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary">
+                                    <span class="ml-2">Soft Skills</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Gambar Cover (opsional)</label>
+                            <div class="flex items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 rounded-lg">
+                                <div class="text-center">
+                                    <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                                    <p class="text-sm text-gray-600">Drag & drop gambar atau <span class="text-primary cursor-pointer">klik untuk memilih</span></p>
+                                    <p class="text-xs text-gray-500">Rekomendasi: 1200x600 pixels</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modules Section -->
+                <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-dark">Modul Pembelajaran</h2>
+                        <button id="add-module-btn" class="bg-primary hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg flex items-center">
+                            <i class="fas fa-plus mr-2"></i> Tambah Modul
+                        </button>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-6">Tambahkan modul-modul pembelajaran secara berurutan. Setiap modul dapat berisi beberapa topik.</p>
+                    
+                    <div id="modules-container" class="space-y-4">
+                        <!-- Module 1 -->
+                        <div class="module-item border border-gray-200 rounded-lg overflow-hidden">
+                            <div class="bg-gray-50 p-4 flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <div class="drag-handle text-gray-400 mr-3 cursor-move">
+                                        <i class="fas fa-grip-vertical"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-semibold">Modul 1: Django Fundamentals</h3>
+                                        <p class="text-sm text-gray-600">Memahami konsep dasar Django framework, MVT pattern, dan setup environment</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                    <button class="text-red-500 hover:text-red-700">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-4 border-t border-gray-200">
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Modul</label>
+                                    <input type="text" value="Django Fundamentals" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Modul</label>
+                                    <textarea rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">Memahami konsep dasar Django framework, MVT pattern, dan setup environment</textarea>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Estimasi Minggu</label>
+                                    <input type="number" min="1" value="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <label class="block text-sm font-medium text-gray-700">Topik dalam Modul</label>
+                                        <button class="text-primary hover:text-blue-700 text-sm font-medium flex items-center">
+                                            <i class="fas fa-plus mr-1"></i> Tambah Topik
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="space-y-2">
+                                        <div class="topic-item flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                            <div class="flex items-center">
+                                                <div class="drag-handle text-gray-400 mr-3 cursor-move">
+                                                    <i class="fas fa-grip-vertical"></i>
+                                                </div>
+                                                <input type="text" value="Instalasi Django dan setup virtual environment" class="bg-transparent border-0 focus:ring-0 w-full">
+                                            </div>
+                                            <button class="text-red-500 hover:text-red-700">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                        
+                                        <div class="topic-item flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                            <div class="flex items-center">
+                                                <div class="drag-handle text-gray-400 mr-3 cursor-move">
+                                                    <i class="fas fa-grip-vertical"></i>
+                                                </div>
+                                                <input type="text" value="Struktur project Django" class="bg-transparent border-0 focus:ring-0 w-full">
+                                            </div>
+                                            <button class="text-red-500 hover:text-red-700">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                        
+                                        <div class="topic-item flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                            <div class="flex items-center">
+                                                <div class="drag-handle text-gray-400 mr-3 cursor-move">
+                                                    <i class="fas fa-grip-vertical"></i>
+                                                </div>
+                                                <input type="text" value="MVT (Model-View-Template) pattern" class="bg-transparent border-0 focus:ring-0 w-full">
+                                            </div>
+                                            <button class="text-red-500 hover:text-red-700">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Module 2 -->
+                        <div class="module-item border border-gray-200 rounded-lg overflow-hidden">
+                            <div class="bg-gray-50 p-4 flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <div class="drag-handle text-gray-400 mr-3 cursor-move">
+                                        <i class="fas fa-grip-vertical"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-semibold">Modul 2: Models & Database</h3>
+                                        <p class="text-sm text-gray-600">Menguasai Django ORM, database modeling, dan migrasi</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <button class="text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                    <button class="text-red-500 hover:text-red-700">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resources Section -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h2 class="text-xl font-bold text-dark mb-4">Sumber Belajar</h2>
+                    
+                    <p class="text-gray-600 mb-6">Rekomendasikan sumber belajar yang berguna untuk journey ini (buku, video, dokumentasi, dll.)</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <select class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="book">Buku</option>
+                                    <option value="video">Video</option>
+                                    <option value="documentation">Dokumentasi</option>
+                                    <option value="article">Artikel</option>
+                                    <option value="course">Kursus Online</option>
+                                </select>
+                            </div>
+                            <div class="flex-1 ml-3">
+                                <input type="text" placeholder="Judul sumber belajar" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent mb-2">
+                                <input type="text" placeholder="URL (opsional)" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <button class="text-red-500 hover:text-red-700 ml-3 mt-2">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <button class="text-primary hover:text-blue-700 font-medium flex items-center">
+                            <i class="fas fa-plus mr-2"></i> Tambah Sumber Belajar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div>
+                <!-- Preview Card -->
+                <div class="bg-white rounded-xl shadow-sm p-6 mb-6 sticky top-24">
+                    <h2 class="text-xl font-bold text-dark mb-4">Pratinjau Journey</h2>
+                    
+                    <div class="journey-card border border-gray-200 rounded-lg overflow-hidden">
+                        <div class="h-32 bg-gradient-to-r from-blue-400 to-blue-600"></div>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-1">Young Django Journey</h3>
+                            <div class="flex items-center text-sm text-gray-600 mb-3">
+                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-0.5 rounded mr-2">Menengah</span>
+                                <span>• 8 minggu</span>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-4">Master Django step by step. Pelajari framework web Python yang powerful untuk membangun aplikasi web yang scalable dan maintainable.</p>
+                            
+                            <div class="flex items-center text-sm text-gray-600 mb-4">
+                                <i class="fas fa-layer-group mr-1"></i>
+                                <span>6 Modul</span>
+                                <span class="mx-2">•</span>
+                                <i class="fas fa-list-ul mr-1"></i>
+                                <span>30 Topik</span>
+                            </div>
+                            
+                            <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                                <div class="bg-primary h-2 rounded-full" style="width: 0%"></div>
+                            </div>
+                            
+                            <button class="w-full bg-primary hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg">
+                                Terbitkan Journey
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tips -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h2 class="text-xl font-bold text-dark mb-4">Tips Membuat Journey</h2>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 text-blue-800 rounded-full h-8 w-8 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">Gunakan Judul yang Jelas</p>
+                                <p class="text-sm text-gray-600">Buat judul yang deskriptif dan menarik perhatian</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-green-100 text-green-800 rounded-full h-8 w-8 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-list-ol"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">Urutan yang Logis</p>
+                                <p class="text-sm text-gray-600">Susun modul dan topik dari yang paling dasar</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-purple-100 text-purple-800 rounded-full h-8 w-8 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">Estimasi Waktu Realistis</p>
+                                <p class="text-sm text-gray-600">Berikan estimasi waktu yang masuk akal untuk setiap modul</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-yellow-100 text-yellow-800 rounded-full h-8 w-8 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">Sumber Belajar Berkualitas</p>
+                                <p class="text-sm text-gray-600">Rekomendasikan sumber belajar yang terpercaya</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Function to add new module
+        document.getElementById('add-module-btn').addEventListener('click', function() {
+            const modulesContainer = document.getElementById('modules-container');
+            const moduleCount = modulesContainer.children.length + 1;
+            
+            const newModule = document.createElement('div');
+            newModule.className = 'module-item border border-gray-200 rounded-lg overflow-hidden';
+            newModule.innerHTML = `
+                <div class="bg-gray-50 p-4 flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="drag-handle text-gray-400 mr-3 cursor-move">
+                            <i class="fas fa-grip-vertical"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Modul ${moduleCount}: <span contenteditable="true">Nama Modul</span></h3>
+                            <p class="text-sm text-gray-600">Deskripsi modul</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <button class="text-red-500 hover:text-red-700">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="p-4 border-t border-gray-200" style="display: none;">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Modul</label>
+                        <input type="text" placeholder="Nama modul" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Modul</label>
+                        <textarea rows="2" placeholder="Deskripsi singkat modul" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Estimasi Minggu</label>
+                        <input type="number" min="1" placeholder="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="block text-sm font-medium text-gray-700">Topik dalam Modul</label>
+                            <button class="text-primary hover:text-blue-700 text-sm font-medium flex items-center">
+                                <i class="fas fa-plus mr-1"></i> Tambah Topik
+                            </button>
+                        </div>
+                        
+                        <div class="space-y-2 topics-container">
+                            <div class="topic-item flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div class="flex items-center">
+                                    <div class="drag-handle text-gray-400 mr-3 cursor-move">
+                                        <i class="fas fa-grip-vertical"></i>
+                                    </div>
+                                    <input type="text" placeholder="Nama topik" class="bg-transparent border-0 focus:ring-0 w-full">
+                                </div>
+                                <button class="text-red-500 hover:text-red-700">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modulesContainer.appendChild(newModule);
+            
+            // Add toggle functionality
+            const toggleBtn = newModule.querySelector('.fa-chevron-down').closest('button');
+            const moduleContent = newModule.querySelector('.border-t');
+            
+            toggleBtn.addEventListener('click', function() {
+                if (moduleContent.style.display === 'none') {
+                    moduleContent.style.display = 'block';
+                    toggleBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
+                } else {
+                    moduleContent.style.display = 'none';
+                    toggleBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
+                }
+            });
+            
+            // Add topic functionality
+            const addTopicBtn = newModule.querySelector('.text-primary');
+            const topicsContainer = newModule.querySelector('.topics-container');
+            
+            addTopicBtn.addEventListener('click', function() {
+                const topicItem = document.createElement('div');
+                topicItem.className = 'topic-item flex items-center justify-between p-3 bg-gray-50 rounded-lg';
+                topicItem.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="drag-handle text-gray-400 mr-3 cursor-move">
+                            <i class="fas fa-grip-vertical"></i>
+                        </div>
+                        <input type="text" placeholder="Nama topik" class="bg-transparent border-0 focus:ring-0 w-full">
+                    </div>
+                    <button class="text-red-500 hover:text-red-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                
+                topicsContainer.appendChild(topicItem);
+                
+                // Add delete functionality to topic
+                const deleteBtn = topicItem.querySelector('button');
+                deleteBtn.addEventListener('click', function() {
+                    topicItem.remove();
+                });
+            });
+            
+            // Add delete functionality to module
+            const deleteBtn = newModule.querySelector('.fa-trash').closest('button');
+            deleteBtn.addEventListener('click', function() {
+                newModule.remove();
+            });
+        });
+
+        // Add toggle functionality to existing modules
+        document.querySelectorAll('.module-item').forEach(module => {
+            const toggleBtn = module.querySelector('.fa-chevron-down').closest('button');
+            const moduleContent = module.querySelector('.border-t');
+            
+            if (toggleBtn && moduleContent) {
+                toggleBtn.addEventListener('click', function() {
+                    if (moduleContent.style.display === 'none' || !moduleContent.style.display) {
+                        moduleContent.style.display = 'block';
+                        toggleBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
+                    } else {
+                        moduleContent.style.display = 'none';
+                        toggleBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

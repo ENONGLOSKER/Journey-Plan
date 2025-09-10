@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Tracking - JourneyPlan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#F59E0B',
+                        dark: '#1F2937',
+                        light: '#F9FAFB'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .progress-ring {
+            transition: stroke-dashoffset 0.5s ease;
+        }
+        .journey-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .journey-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .calendar-day {
+            transition: all 0.2s ease;
+        }
+        .calendar-day:hover {
+            transform: scale(1.05);
+        }
+        .achievement-card {
+            transition: transform 0.3s ease;
+        }
+        .achievement-card:hover {
+            transform: scale(1.03);
+        }
+        .nav-tab {
+            transition: all 0.2s ease;
+        }
+        .nav-tab.active {
+            border-bottom: 3px solid #3B82F6;
+            color: #3B82F6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-md fixed w-full top-0 z-10">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="bg-primary text-white p-2 rounded-lg">
+                    <i class="fas fa-route text-xl"></i>
+                </div>
+                <span class="text-xl font-bold text-primary">JourneyPlan</span>
+            </div>
+            
+            <div class="hidden md:flex space-x-8">
+                <a href="#" class="text-gray-600 hover:text-primary">Home</a>
+                <a href="#" class="text-gray-600 hover:text-primary">Journey Saya</a>
+                <a href="#" class="text-gray-600 hover:text-primary">Jelajahi</a>
+                <a href="#" class="text-primary font-medium border-b-2 border-primary">Profil</a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <input type="text" placeholder="Cari journey..." class="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                    <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                </div>
+                <div class="relative">
+                    <button class="bg-gray-200 rounded-full h-10 w-10 flex items-center justify-center">
+                        <i class="fas fa-bell text-gray-600"></i>
+                    </button>
+                    <span class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full h-5 w-5 text-xs flex items-center justify-center">3</span>
+                </div>
+                <div class="relative">
+                    <button class="bg-primary rounded-full h-10 w-10 flex items-center justify-center">
+                        <span class="text-white font-medium">JS</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 pt-24 pb-16">
+        <!-- Breadcrumb -->
+        <div class="flex items-center text-sm text-gray-500 mb-6">
+            <a href="#" class="text-primary hover:underline">Home</a>
+            <span class="mx-2">/</span>
+            <a href="#" class="text-primary hover:underline">Profil</a>
+            <span class="mx-2">/</span>
+            <span class="text-gray-600">Progress Tracking</span>
+        </div>
+
+        <!-- Page Header -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-dark">Progress Tracking</h1>
+                <p class="text-gray-600">Pantau perkembangan belajarmu dan raih pencapaian</p>
+            </div>
+            <div class="flex space-x-3">
+                <button class="bg-gray-100 hover:bg-gray-200 text-dark font-medium py-2.5 px-4 rounded-lg flex items-center">
+                    <i class="fas fa-download mr-2"></i> Export Data
+                </button>
+                <button class="bg-primary hover:bg-blue-700 text-white font-medium py-2.5 px-5 rounded-lg flex items-center">
+                    <i class="fas fa-share-alt mr-2"></i> Bagikan Progress
+                </button>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="bg-white rounded-xl shadow-sm p-4 mb-6 flex overflow-x-auto">
+            <button class="nav-tab px-4 py-2 font-medium active">Ringkasan</button>
+            <button class="nav-tab px-4 py-2 font-medium">Aktivitas</button>
+            <button class="nav-tab px-4 py-2 font-medium">Pencapaian</button>
+            <button class="nav-tab px-4 py-2 font-medium">Statistik</button>
+            <button class="nav-tab px-4 py-2 font-medium">Goals</button>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <!-- Progress Overview -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-xl font-bold text-dark mb-4">Progress Overview</h2>
+                
+                <div class="flex flex-col items-center mb-6">
+                    <div class="relative mb-4">
+                        <svg class="w-40 h-40" viewBox="0 0 36 36">
+                            <path d="M18 2.0845
+                                a 15.9155 15.9155 0 0 1 0 31.831
+                                a 15.9155 15.9155 0 0 1 0 -31.831"
+                                fill="none"
+                                stroke="#eee"
+                                stroke-width="3"
+                            />
+                            <path d="M18 2.0845
+                                a 15.9155 15.9155 0 0 1 0 31.831
+                                a 15.9155 15.9155 0 0 1 0 -31.831"
+                                fill="none"
+                                stroke="#3B82F6"
+                                stroke-width="3"
+                                stroke-dasharray="60, 100"
+                            />
+                            <text x="18" y="20.5" text-anchor="middle" fill="#1F2937" font-size="8" font-weight="bold">60%</text>
+                        </svg>
+                    </div>
+                    <p class="text-lg font-semibold">Progress Keseluruhan</p>
+                </div>
+                
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Journeys Dimulai</span>
+                        <span class="font-semibold">5</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Journeys Diselesaikan</span>
+                        <span class="font-semibold">2</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Total Waktu Belajar</span>
+                        <span class="font-semibold">42 Jam</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Topik Diselesaikan</span>
+                        <span class="font-semibold">56</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Activity -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-xl font-bold text-dark mb-4">Aktivitas Minggu Ini</h2>
+                
+                <div class="mb-6">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-600">Total: 15 jam</span>
+                        <span class="text-sm font-medium text-gray-600">Rata-rata: 2.1 jam/hari</span>
+                    </div>
+                    
+                    <div class="flex items-end justify-between h-40">
+                        <div class="flex flex-col items-center">
+                            <div class="bg-primary bg-opacity-20 w-8 rounded-t" style="height: 30%"></div>
+                            <span class="text-xs mt-1 text-gray-600">Sen</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="bg-primary w-8 rounded-t" style="height: 50%"></div>
+                            <span class="text-xs mt-1 text-gray-600">Sel</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="bg-primary w-8 rounded-t" style="height: 70%"></div>
+                            <span class="text-xs mt-1 text-gray-600">Rab</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="bg-primary w-8 rounded-t" style="height: 40%"></div>
+                            <span class="text-xs mt-1 text-gray-600">Kam</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="bg-primary w-8 rounded-t" style="height: 90%"></div>
+                            <span class="text-xs mt-1 text-gray-600">Jum</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="bg-primary bg-opacity-20 w-8 rounded-t" style="height: 20%"></div>
+                            <span class="text-xs mt-1 text-gray-600">Sab</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="bg-primary bg-opacity-20 w-8 rounded-t" style="height: 10%"></div>
+                            <span class="text-xs mt-1 text-gray-600">Min</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pt-4 border-t border-gray-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-600">Target harian: 2 jam</span>
+                        <span class="text-sm font-medium text-primary">105% tercapai</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-primary h-2 rounded-full" style="width: 105%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Learning Calendar -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-xl font-bold text-dark mb-4">Kalender Belajar</h2>
+                
+                <div class="flex justify-between items-center mb-4">
+                    <button class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <span class="font-semibold">September 2023</span>
+                    <button class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-7 gap-1 mb-2">
+                    <div class="text-center text-xs text-gray-500 font-medium">M</div>
+                    <div class="text-center text-xs text-gray-500 font-medium">S</div>
+                    <div class="text-center text-xs text-gray-500 font-medium">S</div>
+                    <div class="text-center text-xs text-gray-500 font-medium">R</div>
+                    <div class="text-center text-xs text-gray-500 font-medium">K</div>
+                    <div class="text-center text-xs text-gray-500 font-medium">J</div>
+                    <div class="text-center text-xs text-gray-500 font-medium">S</div>
+                </div>
+                
+                <div class="grid grid-cols-7 gap-1">
+                    <div class="calendar-day text-center py-2 text-gray-400">28</div>
+                    <div class="calendar-day text-center py-2 text-gray-400">29</div>
+                    <div class="calendar-day text-center py-2 text-gray-400">30</div>
+                    <div class="calendar-day text-center py-2 text-gray-400">31</div>
+                    <div class="calendar-day text-center py-2">1</div>
+                    <div class="calendar-day text-center py-2">2</div>
+                    <div class="calendar-day text-center py-2">3</div>
+                    
+                    <div class="calendar-day text-center py-2">4</div>
+                    <div class="calendar-day text-center py-2 bg-blue-50 text-blue-700 font-medium">5</div>
+                    <div class="calendar-day text-center py-2 bg-blue-100 text-blue-800 font-medium">6</div>
+                    <div class="calendar-day text-center py-2 bg-blue-100 text-blue-800 font-medium">7</div>
+                    <div class="calendar-day text-center py-2 bg-blue-50 text-blue-700 font-medium">8</div>
+                    <div class="calendar-day text-center py-2">9</div>
+                    <div class="calendar-day text-center py-2">10</div>
+                    
+                    <div class="calendar-day text-center py-2">11</div>
+                    <div class="calendar-day text-center py-2 bg-blue-50 text-blue-700 font-medium">12</div>
+                    <div class="calendar-day text-center py-2 bg-blue-100 text-blue-800 font-medium">13</div>
+                    <div class="calendar-day text-center py-2 bg-blue-100 text-blue-800 font-medium">14</div>
+                    <div class="calendar-day text-center py-2 bg-blue-100 text-blue-800 font-medium">15</div>
+                    <div class="calendar-day text-center py-2">16</div>
+                    <div class="calendar-day text-center py-2">17</div>
+                    
+                    <div class="calendar-day text-center py-2">18</div>
+                    <div class="calendar-day text-center py-2 bg-blue-50 text-blue-700 font-medium">19</div>
+                    <div class="calendar-day text-center py-2 bg-blue-100 text-blue-800 font-medium">20</div>
+                    <div class="calendar-day text-center py-2 bg-blue-50 text-blue-700 font-medium">21</div>
+                    <div class="calendar-day text-center py-2">22</div>
+                    <div class="calendar-day text-center py-2">23</div>
+                    <div class="calendar-day text-center py-2">24</div>
+                    
+                    <div class="calendar-day text-center py-2">25</div>
+                    <div class="calendar-day text-center py-2 bg-blue-50 text-blue-700 font-medium">26</div>
+                    <div class="calendar-day text-center py-2 bg-blue-100 text-blue-800 font-medium">27</div>
+                    <div class="calendar-day text-center py-2">28</div>
+                    <div class="calendar-day text-center py-2">29</div>
+                    <div class="calendar-day text-center py-2">30</div>
+                    <div class="calendar-day text-center py-2 text-gray-400">1</div>
+                </div>
+                
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <div class="flex items-center justify-center space-x-2">
+                        <div class="flex items-center">
+                            <div class="h-3 w-3 bg-blue-100 rounded mr-1"></div>
+                            <span class="text-xs">1-2 jam</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="h-3 w-3 bg-blue-500 rounded mr-1"></div>
+                            <span class="text-xs">2+ jam</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Journeys -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-dark">Journey Aktif</h2>
+                <a href="#" class="text-primary hover:underline text-sm font-medium">Lihat Semua</a>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Journey 1 -->
+                <div class="journey-card border border-gray-200 rounded-lg p-4">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="font-semibold text-dark">Django Mastery</h3>
+                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded">Aktif</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                        <div class="bg-primary h-2 rounded-full" style="width: 45%"></div>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-600 mb-3">
+                        <span>45% selesai</span>
+                        <span>3/8 modul</span>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-600">
+                        <span>12/30 topik</span>
+                        <span>15 jam</span>
+                    </div>
+                </div>
+                
+                <!-- Journey 2 -->
+                <div class="journey-card border border-gray-200 rounded-lg p-4">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="font-semibold text-dark">Web Dev Path</h3>
+                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-0.5 rounded">Aktif</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                        <div class="bg-primary h-2 rounded-full" style="width: 20%"></div>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-600 mb-3">
+                        <span>20% selesai</span>
+                        <span>1/5 modul</span>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-600">
+                        <span>3/25 topik</span>
+                        <span>5 jam</span>
+                    </div>
+                </div>
+                
+                <!-- Journey 3 -->
+                <div class="journey-card border border-gray-200 rounded-lg p-4">
+                    <div class="flex justify-between items-start mb-3">
+                        <h3 class="font-semibold text-dark">Data Science</h3>
+                        <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-0.5 rounded">Baru</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                        <div class="bg-primary h-2 rounded-full" style="width: 5%"></div>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-600 mb-3">
+                        <span>5% selesai</span>
+                        <span>0/6 modul</span>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-600">
+                        <span>1/28 topik</span>
+                        <span>2 jam</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+            <h2 class="text-xl font-bold text-dark mb-6">Pencapaian</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Achievement 1 -->
+                <div class="achievement-card border border-gray-200 rounded-lg p-4 text-center">
+                    <div class="bg-yellow-100 text-yellow-800 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-fire text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold mb-1">Pembelajar Aktif</h3>
+                    <p class="text-sm text-gray-600 mb-2">20 jam belajar</p>
+                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Tercapai</span>
+                </div>
+                
+                <!-- Achievement 2 -->
+                <div class="achievement-card border border-gray-200 rounded-lg p-4 text-center">
+                    <div class="bg-green-100 text-green-800 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-calendar-check text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold mb-1">Konsisten</h3>
+                    <p class="text-sm text-gray-600 mb-2">7 hari berturut-turut</p>
+                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Tercapai</span>
+                </div>
+                
+                <!-- Achievement 3 -->
+                <div class="achievement-card border border-gray-200 rounded-lg p-4 text-center">
+                    <div class="bg-blue-100 text-blue-800 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-trophy text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold mb-1">Penyelesai</h3>
+                    <p class="text-sm text-gray-600 mb-2">2 journeys selesai</p>
+                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Tercapai</span>
+                </div>
+                
+                <!-- Achievement 4 -->
+                <div class="achievement-card border border-gray-200 rounded-lg p-4 text-center">
+                    <div class="bg-gray-100 text-gray-400 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-gem text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold mb-1">Spesialis</h3>
+                    <p class="text-sm text-gray-600 mb-2">3 journeys selesai</p>
+                    <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2 py-1 rounded">1/3</span>
+                </div>
+            </div>
+            
+            <div class="text-center mt-6">
+                <a href="#" class="text-primary hover:underline font-medium">Lihat semua pencapaian</a>
+            </div>
+        </div>
+
+        <!-- Progress Statistics -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h2 class="text-xl font-bold text-dark mb-6">Statistik Progress</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="font-semibold mb-4">Progress per Kategori</h3>
+                    <canvas id="categoryChart" height="250"></canvas>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold mb-4">Trend Belajar Bulanan</h3>
+                    <canvas id="trendChart" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Category Chart
+            const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+            const categoryChart = new Chart(categoryCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Web Development', 'Data Science', 'Design', 'Soft Skills'],
+                    datasets: [{
+                        data: [45, 20, 15, 20],
+                        backgroundColor: [
+                            '#3B82F6',
+                            '#10B981',
+                            '#F59E0B',
+                            '#8B5CF6'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+            
+            // Trend Chart
+            const trendCtx = document.getElementById('trendChart').getContext('2d');
+            const trendChart = new Chart(trendCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep'],
+                    datasets: [{
+                        label: 'Jam Belajar',
+                        data: [25, 30, 28, 35, 32, 40, 38, 42, 15],
+                        borderColor: '#3B82F6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Jam'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Tab navigation
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

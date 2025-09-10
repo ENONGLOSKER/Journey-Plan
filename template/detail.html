@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journey Plan - detail</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#F59E0B',
+                        dark: '#1F2937',
+                        light: '#F9FAFB'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .progress-ring {
+            transition: stroke-dashoffset 0.5s ease;
+        }
+        .journey-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .journey-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .module-item {
+            transition: background-color 0.2s ease;
+        }
+        .module-item:hover {
+            background-color: #F3F4F6;
+        }
+        .topic-item {
+            transition: all 0.2s ease;
+        }
+        .topic-item:hover {
+            background-color: #F9FAFB;
+        }
+        .checkmark {
+            transition: all 0.2s ease;
+        }
+        .checkmark:hover {
+            transform: scale(1.1);
+        }
+        .rotate-90 {
+            transform: rotate(90deg);
+        }
+        .module-content {
+            transition: max-height 0.3s ease;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-md fixed w-full top-0 z-10">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="bg-primary text-white p-2 rounded-lg">
+                    <i class="fas fa-route text-xl"></i>
+                </div>
+                <span class="text-xl font-bold text-primary">JourneyPlan</span>
+            </div>
+            
+            <div class="hidden md:flex space-x-8">
+                <a href="home.html" class="text-gray-600 hover:text-primary">Home</a>
+                <a href="detail.html" class="text-gray-600 hover:text-primary">Journey</a>
+                <a href="#" class="text-primary font-medium border-b-2 border-primary">Jelajahi</a>
+                <a href="#" class="text-gray-600 hover:text-primary">Profil</a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <input type="text" placeholder="Cari journey..." class="pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                    <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
+                </div>
+                <div class="relative">
+                    <button class="bg-gray-200 rounded-full h-10 w-10 flex items-center justify-center">
+                        <i class="fas fa-bell text-gray-600"></i>
+                    </button>
+                    <span class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full h-5 w-5 text-xs flex items-center justify-center">3</span>
+                </div>
+                <div class="relative">
+                    <button class="bg-primary rounded-full h-10 w-10 flex items-center justify-center">
+                        <span class="text-white font-medium">JS</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 pt-24 pb-16">
+        <!-- Breadcrumb -->
+        <div class="flex items-center text-sm text-gray-500 mb-6">
+            <a href="#" class="text-primary hover:underline">Home</a>
+            <span class="mx-2">/</span>
+            <a href="#" class="text-primary hover:underline">Jelajahi</a>
+            <span class="mx-2">/</span>
+            <span class="text-gray-600">Young Django Journey</span>
+        </div>
+
+        <!-- Journey Header -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                <div>
+                    <h1 class="text-3xl font-bold text-dark mb-2">Young Django Journey</h1>
+                    <div class="flex items-center flex-wrap gap-2 mb-4">
+                        <div class="flex items-center">
+                            <div class="h-8 w-8 rounded-full bg-gray-200 mr-2"></div>
+                            <span class="text-gray-600">Oleh: John Smith</span>
+                        </div>
+                        <span class="text-gray-400">•</span>
+                        <span class="text-gray-600">250 pengikut</span>
+                        <span class="text-gray-400">•</span>
+                        <div class="flex items-center">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="ml-1 text-gray-600">(4.2)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex space-x-3">
+                    <button class="bg-gray-100 hover:bg-gray-200 text-dark font-medium py-2.5 px-4 rounded-lg flex items-center">
+                        <i class="far fa-bookmark mr-2"></i> Simpan
+                    </button>
+                    <button class="bg-gray-100 hover:bg-gray-200 text-dark font-medium py-2.5 px-4 rounded-lg flex items-center">
+                        <i class="fas fa-share-alt mr-2"></i> Bagikan
+                    </button>
+                    <button class="bg-primary hover:bg-blue-700 text-white font-medium py-2.5 px-5 rounded-lg flex items-center">
+                        <i class="fas fa-plus-circle mr-2"></i> Ikuti Journey
+                    </button>
+                </div>
+            </div>
+
+            <p class="text-gray-600 mb-6">Master Django step by step. Pelajari framework web Python yang powerful untuk membangun aplikasi web yang scalable dan maintainable.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <div class="flex items-center">
+                        <div class="bg-blue-100 text-blue-800 rounded-full h-10 w-10 flex items-center justify-center mr-3">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Total Modul</p>
+                            <p class="font-semibold">6 Modul</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <div class="flex items-center">
+                        <div class="bg-green-100 text-green-800 rounded-full h-10 w-10 flex items-center justify-center mr-3">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Estimasi Waktu</p>
+                            <p class="font-semibold">8-10 Minggu</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-purple-50 p-4 rounded-lg">
+                    <div class="flex items-center">
+                        <div class="bg-purple-100 text-purple-800 rounded-full h-10 w-10 flex items-center justify-center mr-3">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-600">Tingkat Kesulitan</p>
+                            <p class="font-semibold">Menengah</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Main Content -->
+            <div class="lg:col-span-2">
+                <!-- Progress Overview -->
+                <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                    <h2 class="text-xl font-bold text-dark mb-4">Progress Overview</h2>
+                    <div class="flex flex-col md:flex-row items-center">
+                        <div class="relative mr-6 mb-4 md:mb-0">
+                            <svg class="w-32 h-32" viewBox="0 0 36 36">
+                                <path d="M18 2.0845
+                                    a 15.9155 15.9155 0 0 1 0 31.831
+                                    a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    fill="none"
+                                    stroke="#eee"
+                                    stroke-width="3"
+                                />
+                                <path d="M18 2.0845
+                                    a 15.9155 15.9155 0 0 1 0 31.831
+                                    a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    fill="none"
+                                    stroke="#3B82F6"
+                                    stroke-width="3"
+                                    stroke-dasharray="45, 100"
+                                />
+                                <text x="18" y="20.5" text-anchor="middle" fill="#1F2937" font-size="8" font-weight="bold">45%</text>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-sm text-gray-600">Modul Diselesaikan</p>
+                                    <p class="font-semibold text-lg">2 dari 6 Modul</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Topik Diselesaikan</p>
+                                    <p class="font-semibold text-lg">12 dari 30 Topik</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Waktu Dipelajari</p>
+                                    <p class="font-semibold text-lg">15 Jam</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-600">Estimasi Selesai</p>
+                                    <p class="font-semibold text-lg">3 Minggu Lagi</p>
+                                </div>
+                            </div>
+                            <button class="mt-4 w-full bg-primary hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg">
+                                Lanjutkan Belajar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Learning Modules -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h2 class="text-xl font-bold text-dark mb-4">Modul Pembelajaran</h2>
+                    
+                    <!-- Module 1 -->
+                    <div class="module-item border border-gray-200 rounded-lg mb-4 overflow-hidden">
+                        <div class="bg-gray-50 p-4 flex justify-between items-center cursor-pointer" onclick="toggleModule('module1')">
+                            <div class="flex items-center">
+                                <div class="h-10 w-10 rounded-full bg-green-100 text-green-800 flex items-center justify-center mr-4">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold">1. Django Fundamentals</h3>
+                                    <p class="text-sm text-gray-600">Memahami konsep dasar Django framework, MVT pattern, dan setup environment</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded mr-3">100%</span>
+                                <i class="fas fa-chevron-down text-gray-400 transition-transform" id="module1-arrow"></i>
+                            </div>
+                        </div>
+                        <div class="module-content" id="module1" style="max-height: 0;">
+                            <div class="p-4 border-t border-gray-200">
+                                <div class="topic-item flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                                    <div class="flex items-center">
+                                        <div class="checkmark h-6 w-6 rounded-full border-2 border-green-500 flex items-center justify-center text-white bg-green-500 mr-3">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <span>Instalasi Django dan setup virtual environment</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i class="far fa-clock mr-1"></i> 30m
+                                    </div>
+                                </div>
+                                <div class="topic-item flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                                    <div class="flex items-center">
+                                        <div class="checkmark h-6 w-6 rounded-full border-2 border-green-500 flex items-center justify-center text-white bg-green-500 mr-3">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <span>Struktur project Django</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i class="far fa-clock mr-1"></i> 45m
+                                    </div>
+                                </div>
+                                <div class="topic-item flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                                    <div class="flex items-center">
+                                        <div class="checkmark h-6 w-6 rounded-full border-2 border-green-500 flex items-center justify-center text-white bg-green-500 mr-3">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <span>MVT (Model-View-Template) pattern</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i class="far fa-clock mr-1"></i> 1j
+                                    </div>
+                                </div>
+                                <div class="topic-item flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                                    <div class="flex items-center">
+                                        <div class="checkmark h-6 w-6 rounded-full border-2 border-green-500 flex items-center justify-center text-white bg-green-500 mr-3">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <span>Django admin interface</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i class="far fa-clock mr-1"></i> 45m
+                                    </div>
+                                </div>
+                                <div class="topic-item flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                                    <div class="flex items-center">
+                                        <div class="checkmark h-6 w-6 rounded-full border-2 border-green-500 flex items-center justify-center text-white bg-green-500 mr-3">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <span>URL routing dan views</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i class="far fa-clock mr-1"></i> 1j 15m
+                                    </div>
+                                </div>
+                                <div class="topic-item flex items-center justify-between py-3">
+                                    <div class="flex items-center">
+                                        <div class="checkmark h-6 w-6 rounded-full border-2 border-green-500 flex items-center justify-center text-white bg-green-500 mr-3">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <span>Template system dan static files</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i class="far fa-clock mr-1"></i> 1j 30m
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Module 2 -->
+                    <div class="module-item border border-gray-200 rounded-lg mb-4 overflow-hidden">
+                        <div class="bg-gray-50 p-4 flex justify-between items-center cursor-pointer" onclick="toggleModule('module2')">
+                            <div class="flex items-center">
+                                <div class="h-10 w-10 rounded-full bg-green-100 text-green-800 flex items-center justify-center mr-4">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold">2. Models & Database</h3>
+                                    <p class="text-sm text-gray-600">Menguasai Django ORM, database modeling, dan migrasi</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded mr-3">100%</span>
+                                <i class="fas fa-chevron-down text-gray-400 transition-transform" id="module2-arrow"></i>
+                            </div>
+                        </div>
+                        <div class="module-content" id="module2" style="max-height: 0;">
+                            <div class="p-4 border-t border-gray-200">
+                                <div class="topic-item flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                                    <div class="flex items-center">
+                                        <div class="checkmark h-6 w-6 rounded-full border-2 border-green-500 flex items-center justify-center text-white bg-green-500 mr-3">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <span>Django ORM basics</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i class="far fa-clock mr-1"></i> 1j
+                                    </div>
+                                </div>
+                                <div class="topic-item flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                                    <div class="flex items-center">
+                                        <div class="checkmark h-6 w-6 rounded-full border-2 border-green-500 flex items-center justify-center text-white bg-green-500 mr-3">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <span>Membuat model</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i class="far fa-clock mr-1"></i> 1j 30m
+                                    </div>
+                                </div>
+                                <div class="topic-item flex items-center justify-between py-3">
+                                    <div class="flex items-center">
+                                        <div class="checkmark h-6 w-6 rounded-full border-2 border-green-500 flex items-center justify-center text-white bg-green-500 mr-3">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <span>Query database</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i class="far fa-clock mr-1"></i> 2j
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Module 3 -->
+                    <div class="module-item border border-gray-200 rounded-lg mb-4 overflow-hidden">
+                        <div class="bg-gray-50 p-4 flex justify-between items-center cursor-pointer" onclick="toggleModule('module3')">
+                            <div class="flex items-center">
+                                <div class="h-10 w-10 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center mr-4">
+                                    <i class="fas fa-spinner"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold">3. Views & Templates</h3>
+                                    <p class="text-sm text-gray-600">Membangun views yang powerful dan template system yang dinamis</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded mr-3">50%</span>
+                                <i class="fas fa-chevron-down text-gray-400 transition-transform" id="module3-arrow"></i>
+                            </div>
+                        </div>
+                        <div class="module-content" id="module3" style="max-height: 0;">
+                            <div class="p-4 border-t border-gray-200">
+                                <div class="topic-item flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                                    <div class="flex items-center">
+                                        <div class="checkmark h-6 w-6 rounded-full border-2 border-green-500 flex items-center justify-center text-white bg-green-500 mr-3">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <span>Function-based views</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i class="far fa-clock mr-1"></i> 1j 15m
+                                    </div>
+                                </div>
+                                <div class="topic-item flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                                    <div class="flex items-center">
+                                        <div class="checkmark h-6 w-6 rounded-full border-2 border-green-500 flex items-center justify-center text-white bg-green-500 mr-3">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <span>Class-based views</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i class="far fa-clock mr-1"></i> 2j
+                                    </div>
+                                </div>
+                                <div class="topic-item flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                                    <div class="flex items-center">
+                                        <div class="checkmark h-6 w-6 rounded-full border-2 border-gray-300 flex items-center justify-center text-transparent mr-3">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <span>Template inheritance</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i class="far fa-clock mr-1"></i> 1j
+                                    </div>
+                                </div>
+                                <div class="topic-item flex items-center justify-between py-3">
+                                    <div class="flex items-center">
+                                        <div class="checkmark h-6 w-6 rounded-full border-2 border-gray-300 flex items-center justify-center text-transparent mr-3">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <span>Custom template tags</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i class="far fa-clock mr-1"></i> 1j 30m
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Module 4 -->
+                    <div class="module-item border border-gray-200 rounded-lg mb-4 overflow-hidden">
+                        <div class="bg-gray-50 p-4 flex justify-between items-center cursor-pointer" onclick="toggleModule('module4')">
+                            <div class="flex items-center">
+                                <div class="h-10 w-10 rounded-full bg-gray-100 text-gray-800 flex items-center justify-center mr-4">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold">4. Authentication & Security</h3>
+                                    <p class="text-sm text-gray-600">Implementasi sistem autentikasi dan keamanan aplikasi</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2 py-1 rounded mr-3">0%</span>
+                                <i class="fas fa-chevron-down text-gray-400 transition-transform" id="module4-arrow"></i>
+                            </div>
+                        </div>
+                        <div class="module-content" id="module4" style="max-height: 0;">
+                            <div class="p-4 border-t border-gray-200">
+                                <div class="topic-item flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                                    <div class="flex items-center">
+                                        <div class="checkmark h-6 w-6 rounded-full border-2 border-gray-300 flex items-center justify-center text-transparent mr-3">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <span>User authentication</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i class="far fa-clock mr-1"></i> 2j
+                                    </div>
+                                </div>
+                                <div class="topic-item flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                                    <div class="flex items-center">
+                                        <div class="checkmark h-6 w-6 rounded-full border-2 border-gray-300 flex items-center justify-center text-transparent mr-3">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <span>Permissions</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i class="far fa-clock mr-1"></i> 1j 30m
+                                    </div>
+                                </div>
+                                <div class="topic-item flex items-center justify-between py-3">
+                                    <div class="flex items-center">
+                                        <div class="checkmark h-6 w-6 rounded-full border-2 border-gray-300 flex items-center justify-center text-transparent mr-3">
+                                            <i class="fas fa-check text-xs"></i>
+                                        </div>
+                                        <span>Security best practices</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <i class="far fa-clock mr-1"></i> 1j
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div>
+                <!-- Resources -->
+                <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                    <h2 class="text-xl font-bold text-dark mb-4">Resources</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 text-blue-800 rounded-lg h-10 w-10 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">Django for Beginners</p>
+                                <p class="text-sm text-gray-600">by William S. Vincent</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-red-100 text-red-800 rounded-lg h-10 w-10 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fab fa-youtube"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">Django Tutorial</p>
+                                <p class="text-sm text-gray-600">by Corey Schafer (YouTube)</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-green-100 text-green-800 rounded-lg h-10 w-10 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">Official Django Documentation</p>
+                                <p class="text-sm text-gray-600">djangoproject.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-purple-100 text-purple-800 rounded-lg h-10 w-10 flex items-center justify-center mr-3 flex-shrink-0">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div>
+                                <p class="font-medium">Django Girls Tutorial</p>
+                                <p class="text-sm text-gray-600">Tutorial Bahasa Indonesia</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Community -->
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <h2 class="text-xl font-bold text-dark mb-4">Komunitas</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="h-10 w-10 rounded-full bg-gray-200 mr-3"></div>
+                                <div>
+                                    <p class="font-medium">Sarah Johnson</p>
+                                    <p class="text-sm text-gray-600">Menyelesaikan 75%</p>
+                                </div>
+                            </div>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Online</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="h-10 w-10 rounded-full bg-gray-200 mr-3"></div>
+                                <div>
+                                    <p class="font-medium">Mike Chen</p>
+                                    <p class="text-sm text-gray-600">Menyelesaikan 45%</p>
+                                </div>
+                            </div>
+                            <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2 py-1 rounded">2j lalu</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="h-10 w-10 rounded-full bg-gray-200 mr-3"></div>
+                                <div>
+                                    <p class="font-medium">Emma Wilson</p>
+                                    <p class="text-sm text-gray-600">Menyelesaikan 90%</p>
+                                </div>
+                            </div>
+                            <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2 py-1 rounded">5j lalu</span>
+                        </div>
+                    </div>
+                    <button class="mt-4 w-full bg-gray-100 hover:bg-gray-200 text-dark font-medium py-2.5 rounded-lg">
+                        Lihat Semua Anggota
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Function to toggle module content
+        function toggleModule(moduleId) {
+            const module = document.getElementById(moduleId);
+            const arrow = document.getElementById(moduleId + '-arrow');
+            
+            if (module.style.maxHeight === '0px' || module.style.maxHeight === '') {
+                module.style.maxHeight = module.scrollHeight + 'px';
+                arrow.classList.add('rotate-90');
+            } else {
+                module.style.maxHeight = '0px';
+                arrow.classList.remove('rotate-90');
+            }
+        }
+
+        // Initialize first module as open
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleModule('module1');
+        });
+    </script>
+</body>
+</html>
