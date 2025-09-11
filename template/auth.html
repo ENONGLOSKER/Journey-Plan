@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - JourneyPlan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#F59E0B',
+                        dark: '#1F2937',
+                        light: '#F9FAFB'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .auth-container {
+            transition: all 0.3s ease;
+        }
+        .auth-tab {
+            transition: all 0.2s ease;
+        }
+        .auth-tab.active {
+            border-bottom: 3px solid #3B82F6;
+            color: #3B82F6;
+        }
+        .social-btn {
+            transition: all 0.2s ease;
+        }
+        .social-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .floating-label {
+            transition: all 0.2s ease;
+        }
+        .form-input:focus ~ .floating-label,
+        .form-input:not(:placeholder-shown) ~ .floating-label {
+            top: -10px;
+            left: 10px;
+            font-size: 12px;
+            background-color: white;
+            padding: 0 5px;
+            color: #3B82F6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full bg-white rounded-xl shadow-lg overflow-hidden">
+        <div class="py-6 px-8">
+            <!-- Logo & Brand -->
+            <div class="flex justify-center mb-6">
+                <div class="bg-primary text-white p-3 rounded-lg">
+                    <i class="fas fa-route text-2xl"></i>
+                </div>
+                <span class="text-2xl font-bold text-primary ml-3">JourneyPlan</span>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex mb-8 border-b">
+                <button id="login-tab" class="auth-tab flex-1 py-3 font-medium text-center active">Masuk</button>
+                <button id="register-tab" class="auth-tab flex-1 py-3 font-medium text-center">Daftar</button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-form" class="auth-container">
+                <form class="space-y-5">
+                    <div class="relative">
+                        <input type="email" placeholder=" " class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <label class="floating-label absolute left-4 top-3 text-gray-500 pointer-events-none">Email</label>
+                    </div>
+
+                    <div class="relative">
+                        <input type="password" placeholder=" " class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <label class="floating-label absolute left-4 top-3 text-gray-500 pointer-events-none">Kata Sandi</label>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center">
+                            <input type="checkbox" class="rounded border-gray-300 text-primary focus:ring-primary">
+                            <span class="ml-2 text-sm text-gray-600">Ingat saya</span>
+                        </label>
+                        <a href="#" class="text-sm text-primary hover:underline">Lupa kata sandi?</a>
+                    </div>
+
+                    <button type="submit" class="w-full bg-primary hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-300">
+                        Masuk
+                    </button>
+                </form>
+
+                <div class="relative flex items-center my-6">
+                    <div class="flex-grow border-t border-gray-300"></div>
+                    <span class="flex-shrink mx-4 text-gray-500 text-sm">atau masuk dengan</span>
+                    <div class="flex-grow border-t border-gray-300"></div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <button class="social-btn flex items-center justify-center py-2.5 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        <i class="fab fa-google text-red-500 mr-2"></i>
+                        Google
+                    </button>
+                    <button class="social-btn flex items-center justify-center py-2.5 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        <i class="fab fa-facebook text-blue-600 mr-2"></i>
+                        Facebook
+                    </button>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-form" class="auth-container hidden">
+                <form class="space-y-5">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="relative">
+                            <input type="text" placeholder=" " class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <label class="floating-label absolute left-4 top-3 text-gray-500 pointer-events-none">Nama Depan</label>
+                        </div>
+                        <div class="relative">
+                            <input type="text" placeholder=" " class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <label class="floating-label absolute left-4 top-3 text-gray-500 pointer-events-none">Nama Belakang</label>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <input type="email" placeholder=" " class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <label class="floating-label absolute left-4 top-3 text-gray-500 pointer-events-none">Email</label>
+                    </div>
+
+                    <div class="relative">
+                        <input type="password" placeholder=" " class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <label class="floating-label absolute left-4 top-3 text-gray-500 pointer-events-none">Kata Sandi</label>
+                    </div>
+
+                    <div class="relative">
+                        <input type="password" placeholder=" " class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <label class="floating-label absolute left-4 top-3 text-gray-500 pointer-events-none">Konfirmasi Kata Sandi</label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input type="checkbox" id="terms" class="rounded border-gray-300 text-primary focus:ring-primary">
+                        <label for="terms" class="ml-2 text-sm text-gray-600">
+                            Saya menyetujui <a href="#" class="text-primary hover:underline">Syarat & Ketentuan</a> dan <a href="#" class="text-primary hover:underline">Kebijakan Privasi</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="w-full bg-primary hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-300">
+                        Daftar
+                    </button>
+                </form>
+
+                <div class="relative flex items-center my-6">
+                    <div class="flex-grow border-t border-gray-300"></div>
+                    <span class="flex-shrink mx-4 text-gray-500 text-sm">atau daftar dengan</span>
+                    <div class="flex-grow border-t border-gray-300"></div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <button class="social-btn flex items-center justify-center py-2.5 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        <i class="fab fa-google text-red-500 mr-2"></i>
+                        Google
+                    </button>
+                    <button class="social-btn flex items-center justify-center py-2.5 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        <i class="fab fa-facebook text-blue-600 mr-2"></i>
+                        Facebook
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="bg-gray-100 py-4 px-8 text-center">
+            <p class="text-sm text-gray-600">
+                © 2023 JourneyPlan. All rights reserved.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+
+        loginTab.addEventListener('click', () => {
+            loginTab.classList.add('active');
+            registerTab.classList.remove('active');
+            loginForm.classList.remove('hidden');
+            registerForm.classList.add('hidden');
+        });
+
+        registerTab.addEventListener('click', () => {
+            registerTab.classList.add('active');
+            loginTab.classList.remove('active');
+            registerForm.classList.remove('hidden');
+            loginForm.classList.add('hidden');
+        });
+
+        // Form validation
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Basic validation
+                let isValid = true;
+                const inputs = form.querySelectorAll('input');
+                
+                inputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        isValid = false;
+                        input.classList.add('border-red-500');
+                    } else {
+                        input.classList.remove('border-red-500');
+                    }
+                });
+                
+                // Password confirmation check for register form
+                if (form === registerForm) {
+                    const password = form.querySelector('input[type="password"]');
+                    const confirmPassword = form.querySelectorAll('input[type="password"]')[1];
+                    
+                    if (password.value !== confirmPassword.value) {
+                        isValid = false;
+                        confirmPassword.classList.add('border-red-500');
+                    }
+                }
+                
+                // Terms check for register form
+                if (form === registerForm) {
+                    const terms = form.querySelector('#terms');
+                    if (!terms.checked) {
+                        isValid = false;
+                        terms.classList.add('border-red-500');
+                    }
+                }
+                
+                if (isValid) {
+                    // Simulate successful form submission
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+                    submitBtn.disabled = true;
+                    
+                    setTimeout(() => {
+                        if (form === loginForm) {
+                            alert('Login berhasil! Mengarahkan ke dashboard...');
+                            // In a real app, redirect to dashboard
+                        } else {
+                            alert('Pendaftaran berhasil! Silakan verifikasi email Anda.');
+                            // Switch to login tab after successful registration
+                            loginTab.click();
+                        }
+                        
+                        submitBtn.textContent = originalText;
+                        submitBtn.disabled = false;
+                        form.reset();
+                    }, 1500);
+                }
+            });
+        });
+
+        // Real-time password validation
+        const passwordInputs = document.querySelectorAll('input[type="password"]');
+        passwordInputs.forEach(input => {
+            input.addEventListener('input', () => {
+                if (input.value.length > 0 && input.value.length < 8) {
+                    input.classList.add('border-yellow-500');
+                    input.classList.remove('border-red-500', 'border-green-500');
+                } else if (input.value.length >= 8) {
+                    input.classList.add('border-green-500');
+                    input.classList.remove('border-red-500', 'border-yellow-500');
+                } else {
+                    input.classList.remove('border-red-500', 'border-green-500', 'border-yellow-500');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

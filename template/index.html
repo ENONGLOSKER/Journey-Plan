@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JourneyPlan - Rencanakan Perjalanan Belajarmu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        primaryDark: '#2563EB',
+                        secondary: '#10B981',
+                        accent: '#F59E0B',
+                        dark: '#1F2937',
+                        light: '#F9FAFB'
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+        }
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .testimonial-card {
+            transition: all 0.3s ease;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .cta-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #3B82F6;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .stats-counter {
+            transition: all 0.5s ease;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white shadow-md z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="bg-primary text-white p-2 rounded-lg">
+                    <i class="fas fa-route text-xl"></i>
+                </div>
+                <span class="text-xl font-bold text-primary">JourneyPlan</span>
+            </div>
+            
+            <div class="hidden md:flex space-x-8">
+                <a href="#" class="nav-link text-gray-600 hover:text-primary">Beranda</a>
+                <a href="#features" class="nav-link text-gray-600 hover:text-primary">Fitur</a>
+                <a href="#how-it-works" class="nav-link text-gray-600 hover:text-primary">Cara Kerja</a>
+                <a href="#testimonials" class="nav-link text-gray-600 hover:text-primary">Testimoni</a>
+                <a href="#pricing" class="nav-link text-gray-600 hover:text-primary">Harga</a>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <a href="#" class="text-gray-600 hover:text-primary font-medium">Masuk</a>
+                <a href="#" class="bg-primary hover:bg-primaryDark text-white font-medium py-2.5 px-5 rounded-lg transition duration-300">Daftar Gratis</a>
+                
+                <button class="md:hidden text-gray-600">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient pt-32 pb-20 px-4 text-white">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6">Rencanakan Perjalanan Belajarmu dengan Mudah</h1>
+                    <p class="text-xl mb-8 opacity-90">Platform all-in-one untuk merencanakan, melacak, dan menyelesaikan perjalanan belajar yang terstruktur dan efektif.</p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="#" class="bg-white text-primary hover:bg-gray-100 font-medium py-3 px-6 rounded-lg text-center transition duration-300">Mulai Sekarang</a>
+                        <a href="#" class="border-2 border-white text-white hover:bg-white hover:text-primary font-medium py-3 px-6 rounded-lg text-center transition duration-300">Lihat Demo</a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative">
+                        <div class="absolute -top-6 -left-6 w-64 h-64 bg-white bg-opacity-20 rounded-full"></div>
+                        <div class="absolute -bottom-6 -right-6 w-64 h-64 bg-white bg-opacity-10 rounded-full"></div>
+                        <div class="relative bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="font-semibold text-dark">Young Django Journey</h3>
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">Aktif</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2 mb-4">
+                                <div class="bg-primary h-2 rounded-full" style="width: 45%"></div>
+                            </div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-6">
+                                <span>45% selesai</span>
+                                <span>3/8 modul</span>
+                            </div>
+                            <div class="space-y-3 text-dark">
+                                <div class="flex items-center">
+                                    <div class="h-8 w-8 rounded-full bg-green-100 text-green-800 flex items-center justify-center mr-3">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <span class="text-sm">Django Fundamentals</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="h-8 w-8 rounded-full bg-green-100 text-green-800 flex items-center justify-center mr-3">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <span class="text-sm">Models & Database</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="h-8 w-8 rounded-full bg-blue-100 text-blue-800 flex items-center justify-center mr-3">
+                                        <i class="fas fa-spinner"></i>
+                                    </div>
+                                    <span class="text-sm">Views & Templates</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="h-8 w-8 rounded-full bg-gray-100 text-gray-400 flex items-center justify-center mr-3">
+                                        <i class="fas fa-lock"></i>
+                                    </div>
+                                    <span class="text-sm">Authentication</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="stats-counter">
+                    <div class="text-4xl font-bold text-primary mb-2" data-count="50000">50,000+</div>
+                    <div class="text-gray-600">Pengguna</div>
+                </div>
+                <div class="stats-counter">
+                    <div class="text-4xl font-bold text-primary mb-2" data-count="1000">1,000+</div>
+                    <div class="text-gray-600">Journey Plans</div>
+                </div>
+                <div class="stats-counter">
+                    <div class="text-4xl font-bold text-primary mb-2" data-count="95">95%</div>
+                    <div class="text-gray-600">Kepuasan Pengguna</div>
+                </div>
+                <div class="stats-counter">
+                    <div class="text-4xl font-bold text-primary mb-2" data-count="1000000">1M+</div>
+                    <div class="text-gray-600">Topik Diselesaikan</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">Fitur Unggulan</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">JourneyPlan menawarkan segala yang kamu butuhkan untuk merencanakan dan melacak perjalanan belajarmu</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="feature-card bg-white rounded-xl p-8 shadow-md">
+                    <div class="bg-blue-100 text-blue-800 rounded-lg h-16 w-16 flex items-center justify-center mb-6">
+                        <i class="fas fa-route text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Buat Journey Plan</h3>
+                    <p class="text-gray-600">Rancang perjalanan belajar yang terstruktur dengan modul dan topik yang dapat disesuaikan.</p>
+                </div>
+                
+                <div class="feature-card bg-white rounded-xl p-8 shadow-md">
+                    <div class="bg-green-100 text-green-800 rounded-lg h-16 w-16 flex items-center justify-center mb-6">
+                        <i class="fas fa-chart-line text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Lacak Progress</h3>
+                    <p class="text-gray-600">Pantau perkembangan belajarmu dengan statistik visual dan pencapaian yang memotivasi.</p>
+                </div>
+                
+                <div class="feature-card bg-white rounded-xl p-8 shadow-md">
+                    <div class="bg-purple-100 text-purple-800 rounded-lg h-16 w-16 flex items-center justify-center mb-6">
+                        <i class="fas fa-users text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Komunitas Pembelajar</h3>
+                    <p class="text-gray-600">Terhubung dengan pembelajar lain, berbagi progress, dan saling memberi motivasi.</p>
+                </div>
+                
+                <div class="feature-card bg-white rounded-xl p-8 shadow-md">
+                    <div class="bg-yellow-100 text-yellow-800 rounded-lg h-16 w-16 flex items-center justify-center mb-6">
+                        <i class="fas fa-trophy text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Sistem Pencapaian</h3>
+                    <p class="text-gray-600">Dapatkan badge dan achievement sebagai pengakuan atas konsistensi belajarmu.</p>
+                </div>
+                
+                <div class="feature-card bg-white rounded-xl p-8 shadow-md">
+                    <div class="bg-red-100 text-red-800 rounded-lg h-16 w-16 flex items-center justify-center mb-6">
+                        <i class="fas fa-mobile-alt text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Akses di Semua Perangkat</h3>
+                    <p class="text-gray-600">Akses JourneyPlan dari desktop, tablet, atau smartphone-mu kapan saja.</p>
+                </div>
+                
+                <div class="feature-card bg-white rounded-xl p-8 shadow-md">
+                    <div class="bg-indigo-100 text-indigo-800 rounded-lg h-16 w-16 flex items-center justify-center mb-6">
+                        <i class="fas fa-graduation-cap text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Sumber Belajar Terkini</h3>
+                    <p class="text-gray-600">Rekomendasi sumber belajar terpercaya untuk setiap topik yang kamu pelajari.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">Cara Kerja JourneyPlan</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Hanya perlu 3 langkah sederhana untuk memulai perjalanan belajarmu</p>
+            </div>
+            
+            <div class="flex flex-col md:flex-row space-y-10 md:space-y-0 md:space-x-10">
+                <div class="flex-1 text-center">
+                    <div class="bg-blue-100 text-blue-800 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-6 text-2xl font-bold">1</div>
+                    <h3 class="text-xl font-semibold mb-4">Buat Journey Plan</h3>
+                    <p class="text-gray-600">Pilih dari template yang ada atau buat journey plan custom sesuai kebutuhan belajarmu.</p>
+                </div>
+                
+                <div class="flex-1 text-center">
+                    <div class="bg-green-100 text-green-800 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-6 text-2xl font-bold">2</div>
+                    <h3 class="text-xl font-semibold mb-4">Ikuti Rencana Belajar</h3>
+                    <p class="text-gray-600">Ikuti modul dan topik yang telah direncanakan, lengkapi satu per satu.</p>
+                </div>
+                
+                <div class="flex-1 text-center">
+                    <div class="bg-purple-100 text-purple-800 rounded-full h-20 w-20 flex items-center justify-center mx-auto mb-6 text-2xl font-bold">3</div>
+                    <h3 class="text-xl font-semibold mb-4">Raih Pencapaian</h3>
+                    <p class="text-gray-600">Lacak progress dan raih achievement sebagai bukti konsistensi belajarmu.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-dark mb-4">Apa Kata Pengguna Kami</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Dengarkan pengalaman langsung dari pengguna JourneyPlan</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="testimonial-card bg-white rounded-xl p-8 shadow-md">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"JourneyPlan telah mengubah cara saya belajar. Sekarang saya lebih terstruktur dan termotivasi untuk menyelesaikan setiap topik."</p>
+                    <div class="flex items-center">
+                        <div class="h-12 w-12 rounded-full bg-gray-200 mr-4"></div>
+                        <div>
+                            <div class="font-semibold">Sarah Johnson</div>
+                            <div class="text-gray-500">Web Developer</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card bg-white rounded-xl p-8 shadow-md">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"Sistem pencapaian dan progress tracking sangat memotivasi. Saya jadi ingin terus belajar untuk menyelesaikan journey."</p>
+                    <div class="flex items-center">
+                        <div class="h-12 w-12 rounded-full bg-gray-200 mr-4"></div>
+                        <div>
+                            <div class="font-semibold">Michael Chen</div>
+                            <div class="text-gray-500">Data Scientist</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card bg-white rounded-xl p-8 shadow-md">
+                    <div class="flex text-yellow-400 mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"Sebagai seorang pemula, template journey yang disediakan sangat membantu. Saya tidak bingung harus mulai dari mana."</p>
+                    <div class="flex items-center">
+                        <div class="h-12 w-12 rounded-full bg-gray-200 mr-4"></div>
+                        <div>
+                            <div class="font-semibold">Alex Rodriguez</div>
+                            <div class="text-gray-500">UI/UX Designer</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-gradient py-20 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Siap Memulai Perjalanan Belajarmu?</h2>
+            <p class="text-xl mb-10 max-w-3xl mx-auto">Bergabunglah dengan ribuan pembelajar lainnya dan raih tujuan belajarmu dengan JourneyPlan</p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <a href="#" class="bg-white text-primary hover:bg-gray-100 font-medium py-3 px-8 rounded-lg transition duration-300">Daftar Gratis</a>
+                <a href="#" class="border-2 border-white text-white hover:bg-white hover:text-primary font-medium py-3 px-8 rounded-lg transition duration-300">Lihat Demo</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="bg-primary text-white p-2 rounded-lg">
+                            <i class="fas fa-route text-xl"></i>
+                        </div>
+                        <span class="text-xl font-bold text-white">JourneyPlan</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Platform untuk merencanakan dan melacak perjalanan belajar Anda.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Tautan Cepat</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Tentang Kami</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Karier</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Kontak</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Sumber Daya</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Bantuan</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Komunitas</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Webinar</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Template Journey</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Berlangganan</h3>
+                    <p class="text-gray-400 mb-4">Dapatkan update terbaru dan tips belajar langsung ke inbox Anda</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Email Anda" class="px-4 py-2 rounded-l-lg focus:outline-none text-gray-800 w-full">
+                        <button class="bg-primary text-white px-4 py-2 rounded-r-lg">OK</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400">© 2023 JourneyPlan. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white">Syarat & Ketentuan</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Kebijakan Privasi</a>
+                    <a href="#" class="text-gray-400 hover:text-white">Cookie</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animate stats counters
+        function animateCounter(el) {
+            const target = parseInt(el.getAttribute('data-count'));
+            const duration = 2000;
+            const step = target / (duration / 16);
+            let current = 0;
+            
+            const timer = setInterval(() => {
+                current += step;
+                if (current >= target) {
+                    clearInterval(timer);
+                    current = target;
+                }
+                el.textContent = Math.round(current).toLocaleString();
+            }, 16);
+        }
+        
+        // Intersection Observer for stats animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counters = document.querySelectorAll('.stats-counter > div:first-child');
+                    counters.forEach(counter => {
+                        animateCounter(counter);
+                    });
+                    observer.disconnect();
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        observer.observe(document.querySelector('.stats-counter'));
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Mobile menu toggle
+        const mobileMenuButton = document.querySelector('button.md\\:hidden');
+        mobileMenuButton.addEventListener('click', () => {
+            alert('Menu mobile akan ditampilkan di sini. Dalam implementasi nyata, ini akan membuka menu navigasi.');
+        });
+    </script>
+</body>
+</html>
